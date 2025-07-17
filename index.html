@@ -7,125 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f5f7fa;
-        }
-        .modal {
-            transition: opacity 0.25s ease;
-        }
-        .modal-active {
-            overflow-y: visible !important;
-            overflow-x: hidden;
-        }
-        .table-container {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th {
-            position: sticky;
-            top: 0;
-            background-color: #f9fafb;
-            z-index: 10;
-        }
-        
-        /* Estilos para impressão */
-        @media print {
-            body {
-                background-color: white;
-                font-size: 12pt;
-            }
-            
-            .bg-gradient-to-r {
-                background: white !important;
-                color: black !important;
-                padding: 10px 0 !important;
-                box-shadow: none !important;
-            }
-            
-            .container {
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            
-            .bg-white {
-                box-shadow: none !important;
-                padding: 0 !important;
-            }
-            
-            button, .flex.space-x-2, #clearFiltersBtn {
-                display: none !important;
-            }
-            
-            .table-container {
-                overflow: visible !important;
-            }
-            
-            table {
-                page-break-inside: auto;
-                border: 1px solid #ddd;
-            }
-            
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-            
-            th {
-                background-color: #f0f0f0 !important;
-                color: black !important;
-                border-bottom: 1px solid #ddd;
-            }
-            
-            td, th {
-                border: 1px solid #ddd;
-                padding: 8px !important;
-            }
-            
-            .mb-6, .mb-4 {
-                margin-bottom: 10px !important;
-            }
-            
-            /* Mostrar informações de filtro na impressão */
-            .print-filters {
-                display: block !important;
-                margin-bottom: 10px;
-                font-size: 10pt;
-            }
-            
-            /* Cabeçalho de impressão */
-            .print-header {
-                display: block !important;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            
-            .print-header h1 {
-                font-size: 18pt;
-                margin-bottom: 5px;
-            }
-            
-            .print-header p {
-                font-size: 10pt;
-                color: #666;
-            }
-            
-            /* Rodapé de impressão */
-            .print-footer {
-                display: block !important;
-                text-align: center;
-                font-size: 8pt;
-                color: #666;
-                margin-top: 20px;
-                border-top: 1px solid #ddd;
-                padding-top: 10px;
-            }
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f5f7fa; }
+        .modal { transition: opacity 0.25s ease; }
+        .modal-active { overflow-y: hidden !important; }
+        table { width: 100%; border-collapse: collapse; }
+        th { position: sticky; top: 0; background-color: #f9fafb; z-index: 10; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -137,89 +23,12 @@
     </div>
 
     <div class="container mx-auto p-6">
-        <!-- Elementos visíveis apenas na impressão -->
-        <div class="print-header hidden">
-            <h1>Criativa Mais Cultura - Relatório de Pedidos</h1>
-            <p>Data de impressão: <span id="printDate"></span></p>
-        </div>
-        
-        <div class="print-filters hidden">
-            <p id="printFilterInfo">Filtros aplicados: Todos os pedidos</p>
-        </div>
-        
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-800">Controle de Pedidos</h2>
                 <div class="flex space-x-2">
-                    <button id="printBtn" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                        </svg>
-                        Imprimir
-                    </button>
-                    <button id="manageEventsBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                        </svg>
-                        Gerenciar Eventos
-                    </button>
-                    <button id="newOrderBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-                        </svg>
-                        Novo Pedido
-                    </button>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Filtrar por Status</label>
-                        <select id="statusFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="">Todos</option>
-                            <option value="Pendente">Pendente</option>
-                            <option value="Aprovado">Aprovado</option>
-                            <option value="Lançado">Lançado</option>
-                            <option value="Cancelado">Cancelado</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Filtrar por Evento</label>
-                        <select id="eventFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="">Todos</option>
-                            <option value="Sem vínculo a evento">Sem vínculo a evento</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Buscar</label>
-                        <input type="text" id="searchInput" placeholder="Buscar por descrição ou solicitante..." class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Data</label>
-                        <select id="dateTypeFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="deadline">Data de Prazo</option>
-                            <option value="authorized">Data Aprovada para Compra</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">De</label>
-                        <input type="date" id="dateFromFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Até</label>
-                        <input type="date" id="dateToFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                </div>
-                <div class="flex justify-end">
-                    <button id="clearFiltersBtn" class="flex items-center bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                        Limpar Filtros
-                    </button>
+                    <button id="manageEventsBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center">Gerenciar Eventos</button>
+                    <button id="newOrderBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">Novo Pedido</button>
                 </div>
             </div>
 
@@ -233,1394 +42,267 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prazo Compra</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Aprovada</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Utilização</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Evento</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
-                        <!-- Dados serão inseridos aqui via JavaScript -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
             <div id="noOrders" class="text-center py-8 text-gray-500 hidden">
                 Nenhum pedido encontrado. Crie um novo pedido para começar.
             </div>
         </div>
-        
-        <!-- Rodapé visível apenas na impressão -->
-        <div class="print-footer hidden">
-            <p>Criativa Mais Cultura - Sistema de Gestão de Pedidos</p>
-            <p>Página <span class="pageNumber"></span></p>
-        </div>
     </div>
 
-    <!-- Modal Novo Pedido -->
     <div id="newOrderModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
         <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
         <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto max-h-full">
             <div class="modal-content py-4 text-left px-6 max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center pb-3">
                     <p class="text-xl font-bold text-gray-700">Novo Pedido</p>
-                    <button class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </button>
+                    <button class="modal-close cursor-pointer z-50">&times;</button>
                 </div>
-
                 <form id="orderForm" class="space-y-4">
                     <input type="hidden" id="orderId">
-                    <input type="hidden" id="orderStatus" value="Pendente">
-                    
                     <div>
                         <label for="requesterName" class="block text-sm font-medium text-gray-700 mb-1">Nome do Solicitante *</label>
-                        <input type="text" id="requesterName" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="requesterName" required class="w-full border border-gray-300 rounded-md px-3 py-2">
                     </div>
-                    
                     <div>
                         <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Descrição do Item/Pedido *</label>
-                        <textarea id="description" required rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        <textarea id="description" required rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2"></textarea>
                     </div>
-                    
                     <div>
                         <label for="estimatedValue" class="block text-sm font-medium text-gray-700 mb-1">Valor Estimado (R$) *</label>
-                        <input type="number" id="estimatedValue" required min="0" step="0.01" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="number" id="estimatedValue" required min="0" step="0.01" class="w-full border border-gray-300 rounded-md px-3 py-2">
                     </div>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="deadlineDate" class="block text-sm font-medium text-gray-700 mb-1">Data Prazo para Compra *</label>
-                            <input type="date" id="deadlineDate" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="date" id="deadlineDate" required class="w-full border border-gray-300 rounded-md px-3 py-2">
                         </div>
-                        
                         <div>
                             <label for="useDate" class="block text-sm font-medium text-gray-700 mb-1">Data de Utilização *</label>
-                            <input type="date" id="useDate" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="date" id="useDate" required class="w-full border border-gray-300 rounded-md px-3 py-2">
                         </div>
                     </div>
-                    
                     <div>
                         <label for="eventName" class="block text-sm font-medium text-gray-700 mb-1">Evento</label>
-                        <select id="eventName" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select id="eventName" class="w-full border border-gray-300 rounded-md px-3 py-2">
                             <option value="Sem vínculo a evento">Sem vínculo a evento</option>
-                            <!-- Eventos dinâmicos serão adicionados aqui via JavaScript -->
                         </select>
                     </div>
-
-                    <div id="approvalFields" class="hidden space-y-4 pt-2 border-t border-gray-200">
-                        <div>
-                            <label for="authorizedDate" class="block text-sm font-medium text-gray-700 mb-1">Data Autorizada para Compra *</label>
-                            <input type="date" id="authorizedDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div>
-                            <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Forma de Pagamento *</label>
-                            <select id="paymentMethod" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="">Selecione</option>
-                                <option value="À vista">À vista</option>
-                                <option value="Parcelado">Parcelado</option>
-                                <option value="Faturado">Faturado</option>
-                                <option value="PIX">PIX</option>
-                                <option value="Transferência">Transferência</option>
-                                <option value="Outro">Outro</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="additionalNotesField" class="hidden space-y-4 pt-2 border-t border-gray-200">
-                        <div>
-                            <label for="additionalNotes" class="block text-sm font-medium text-gray-700 mb-1">Observações Adicionais</label>
-                            <textarea id="additionalNotes" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                        </div>
-                    </div>
-
                     <div class="flex justify-end pt-2">
-                        <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Salvar
-                        </button>
+                        <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Salvar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- Modal de Aprovação -->
-    <div id="approvalModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
-        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-xl font-bold text-gray-700">Aprovar Pedido</p>
-                    <button class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <form id="approvalForm" class="space-y-4">
-                    <input type="hidden" id="approvalOrderId">
-                    
-                    <div>
-                        <label for="approvalPassword" class="block text-sm font-medium text-gray-700 mb-1">Senha de Aprovação *</label>
-                        <input type="password" id="approvalPassword" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label for="approvalAuthorizedDate" class="block text-sm font-medium text-gray-700 mb-1">Data Autorizada para Compra *</label>
-                        <input type="date" id="approvalAuthorizedDate" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label for="approvalPaymentMethod" class="block text-sm font-medium text-gray-700 mb-1">Forma de Pagamento *</label>
-                        <select id="approvalPaymentMethod" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Selecione</option>
-                            <option value="À vista">À vista</option>
-                            <option value="Parcelado">Parcelado</option>
-                            <option value="Faturado">Faturado</option>
-                            <option value="PIX">PIX</option>
-                            <option value="Transferência">Transferência</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-
-                    <div id="passwordError" class="text-red-500 text-sm hidden">
-                        Senha incorreta. Por favor, tente novamente.
-                    </div>
-
-                    <div class="flex justify-end pt-2">
-                        <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Aprovar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Alteração -->
-    <div id="changeModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
-        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-xl font-bold text-gray-700">Adicionar Observações</p>
-                    <button class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <form id="changeForm" class="space-y-4">
-                    <input type="hidden" id="changeOrderId">
-                    
-                    <div>
-                        <label for="changeNotes" class="block text-sm font-medium text-gray-700 mb-1">Observações Adicionais *</label>
-                        <textarea id="changeNotes" required rows="4" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
-                    </div>
-
-                    <div class="flex justify-end pt-2">
-                        <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Salvar Observações
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Detalhes -->
-    <div id="detailsModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
-        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-2xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-xl font-bold text-gray-700">Detalhes do Pedido</p>
-                    <button class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div id="orderDetails" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">ID do Pedido</p>
-                            <p id="detailId" class="text-base font-medium text-gray-900"></p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Status</p>
-                            <p id="detailStatus" class="text-base font-medium"></p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Solicitante</p>
-                        <p id="detailRequester" class="text-base font-medium text-gray-900"></p>
-                    </div>
-
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Descrição</p>
-                        <p id="detailDescription" class="text-base font-medium text-gray-900"></p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Valor Estimado</p>
-                            <p id="detailValue" class="text-base font-medium text-gray-900"></p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Data Prazo para Compra</p>
-                            <p id="detailDeadline" class="text-base font-medium text-gray-900"></p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Data de Utilização</p>
-                            <p id="detailUseDate" class="text-base font-medium text-gray-900"></p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Evento</p>
-                        <p id="detailEvent" class="text-base font-medium text-gray-900"></p>
-                    </div>
-
-                    <div id="approvalDetailsSection" class="hidden border-t border-gray-200 pt-4 mt-4">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Informações de Aprovação</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-sm font-medium text-gray-500">Data Autorizada</p>
-                                <p id="detailAuthorizedDate" class="text-base font-medium text-gray-900"></p>
-                            </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-500">Forma de Pagamento</p>
-                                <p id="detailPaymentMethod" class="text-base font-medium text-gray-900"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="notesSection" class="hidden border-t border-gray-200 pt-4 mt-4">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Observações Adicionais</h3>
-                        <p id="detailNotes" class="text-base font-medium text-gray-900"></p>
-                    </div>
-
-                    <div id="historySection" class="border-t border-gray-200 pt-4 mt-4">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Histórico de Ações</h3>
-                        <div class="bg-gray-50 rounded-lg p-3 max-h-60 overflow-y-auto">
-                            <ul id="detailHistory" class="space-y-2 text-sm">
-                                <!-- Histórico será inserido aqui via JavaScript -->
-                            </ul>
-                            <p id="noHistory" class="text-center text-gray-500 py-2 hidden">Nenhum histórico disponível.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end pt-4">
-                        <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
-                            Fechar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Gerenciamento de Eventos -->
-    <div id="eventsModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
-        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-2xl mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-xl font-bold text-gray-700">Gerenciar Eventos</p>
-                    <button class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="mb-4">
-                    <form id="eventForm" class="flex items-end space-x-2">
-                        <div class="flex-grow">
-                            <label for="newEventName" class="block text-sm font-medium text-gray-700 mb-1">Nome do Evento</label>
-                            <input type="text" id="newEventName" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
-                            Adicionar
-                        </button>
-                    </form>
-                </div>
-
-                <div class="overflow-y-auto max-h-96">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nome do Evento
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Ações
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="eventsTableBody" class="bg-white divide-y divide-gray-200">
-                            <!-- Eventos serão inseridos aqui via JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="noEvents" class="text-center py-8 text-gray-500 hidden">
-                    Nenhum evento cadastrado. Adicione um novo evento para começar.
-                </div>
-
-                <div class="flex justify-end pt-4 mt-4 border-t border-gray-200">
-                    <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
-                        Fechar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmação -->
-    <div id="confirmModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
-        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-            <div class="modal-content py-4 text-left px-6">
-                <div class="flex justify-between items-center pb-3">
-                    <p class="text-xl font-bold text-gray-700" id="confirmTitle">Confirmação</p>
-                    <button class="modal-close cursor-pointer z-50">
-                        <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="py-4">
-                    <p id="confirmMessage" class="text-gray-700"></p>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button type="button" class="modal-close bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">
-                        Cancelar
-                    </button>
-                    <button id="confirmButton" type="button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                        Confirmar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <script>
-        // Banco de dados local usando localStorage
-        const DB_KEY = 'criativa_orders';
-        const EVENTS_KEY = 'criativa_events';
-        
-        // Inicializar banco de dados se não existir
-        if (!localStorage.getItem(DB_KEY)) {
-            localStorage.setItem(DB_KEY, JSON.stringify([]));
-        }
-        
-        // Inicializar banco de dados de eventos se não existir
-        if (!localStorage.getItem(EVENTS_KEY)) {
-            localStorage.setItem(EVENTS_KEY, JSON.stringify([]));
-        }
+        // --- CONFIGURAÇÃO ---
+        const API_URL = 'https://sistema-compras-criativa.onrender.com';
 
-        // Funções de manipulação do banco de dados
-        function getOrders() {
-            return JSON.parse(localStorage.getItem(DB_KEY) || '[]');
-        }
+        // --- FUNÇÕES DE API (CONVERSA COM O BACKEND) ---
 
-        function saveOrders(orders) {
-            localStorage.setItem(DB_KEY, JSON.stringify(orders));
-        }
-
-        function getNextId() {
-            const orders = getOrders();
-            if (orders.length === 0) return 1;
-            return Math.max(...orders.map(order => order.id)) + 1;
-        }
-
-        function addOrder(order) {
-            const orders = getOrders();
-            order.id = getNextId();
-            order.createdAt = new Date().toISOString();
-            
-            // Inicializar histórico
-            order.history = [{
-                action: 'Criação',
-                date: order.createdAt,
-                details: 'Pedido criado'
-            }];
-            
-            orders.push(order);
-            saveOrders(orders);
-            return order;
-        }
-
-        function updateOrder(order) {
-            const orders = getOrders();
-            const index = orders.findIndex(o => o.id === order.id);
-            if (index !== -1) {
-                const oldOrder = orders[index];
-                const updatedAt = new Date().toISOString();
-                
-                // Preservar histórico existente ou criar novo
-                const history = oldOrder.history || [];
-                
-                // Detectar mudanças para registrar no histórico
-                if (oldOrder.status !== order.status) {
-                    history.push({
-                        action: 'Alteração de Status',
-                        date: updatedAt,
-                        details: `Status alterado de "${oldOrder.status}" para "${order.status}"`
-                    });
-                }
-                
-                // Registrar alteração de evento
-                if (oldOrder.eventName !== order.eventName) {
-                    history.push({
-                        action: 'Alteração de Evento',
-                        date: updatedAt,
-                        details: `Evento alterado de "${oldOrder.eventName}" para "${order.eventName}"`
-                    });
-                }
-                
-                // Registrar aprovação
-                if (oldOrder.status !== 'Aprovado' && order.status === 'Aprovado') {
-                    history.push({
-                        action: 'Aprovação',
-                        date: updatedAt,
-                        details: `Pedido aprovado com pagamento: ${order.paymentMethod}`
-                    });
-                }
-                
-                // Registrar lançamento
-                if (oldOrder.status !== 'Lançado' && order.status === 'Lançado') {
-                    history.push({
-                        action: 'Lançamento',
-                        date: updatedAt,
-                        details: 'Pedido lançado no sistema financeiro'
-                    });
-                }
-                
-                // Registrar cancelamento
-                if (oldOrder.status !== 'Cancelado' && order.status === 'Cancelado') {
-                    history.push({
-                        action: 'Cancelamento',
-                        date: updatedAt,
-                        details: 'Pedido cancelado'
-                    });
-                }
-                
-                // Registrar alteração de observações
-                if (oldOrder.additionalNotes !== order.additionalNotes && order.additionalNotes) {
-                    history.push({
-                        action: 'Observações',
-                        date: updatedAt,
-                        details: 'Observações adicionais atualizadas'
-                    });
-                }
-                
-                // Registrar edição geral se nenhuma alteração específica foi detectada
-                if (history.length === (oldOrder.history ? oldOrder.history.length : 0)) {
-                    history.push({
-                        action: 'Edição',
-                        date: updatedAt,
-                        details: 'Informações do pedido atualizadas'
-                    });
-                }
-                
-                orders[index] = { 
-                    ...oldOrder, 
-                    ...order, 
-                    updatedAt: updatedAt,
-                    history: history
-                };
-                
-                saveOrders(orders);
-                return orders[index];
+        async function fetchAPI(endpoint, options = {}) {
+            const response = await fetch(`${API_URL}${endpoint}`, options);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Ocorreu um erro na requisição.');
             }
-            return null;
+            return response.json();
         }
 
-        function deleteOrder(id) {
-            const orders = getOrders();
-            const newOrders = orders.filter(order => order.id !== id);
-            saveOrders(newOrders);
+        async function getPedidos() {
+            return fetchAPI('/api/pedidos');
         }
 
-        function getOrderById(id) {
-            const orders = getOrders();
-            return orders.find(order => order.id === id) || null;
+        async function createPedido(pedidoData) {
+            return fetchAPI('/api/pedidos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(pedidoData)
+            });
+        }
+        
+        async function updatePedido(id, pedidoData) {
+            return fetchAPI(`/api/pedidos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(pedidoData)
+            });
+        }
+        
+        async function deletePedido(id) {
+             return fetchAPI(`/api/pedidos/${id}`, { method: 'DELETE' });
         }
 
-        // Funções de manipulação da interface
+        async function getEventos() {
+            return fetchAPI('/api/eventos');
+        }
+
+        // --- FUNÇÕES DA INTERFACE (MANIPULAÇÃO DO HTML) ---
+
         function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.classList.add('modal-active');
+            document.getElementById(modalId).classList.remove('opacity-0', 'pointer-events-none');
         }
 
         function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            document.body.classList.remove('modal-active');
-        }
-
-        function closeAllModals() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.classList.add('opacity-0', 'pointer-events-none');
-            });
-            document.body.classList.remove('modal-active');
+            document.getElementById(modalId).classList.add('opacity-0', 'pointer-events-none');
         }
 
         function formatDate(dateString) {
-            if (!dateString) return '';
-            // Fix timezone issue by parsing the date and adjusting for local timezone
-            const [year, month, day] = dateString.split('-').map(Number);
-            const date = new Date(year, month - 1, day);
-            return date.toLocaleDateString('pt-BR');
+            if (!dateString) return '-';
+            const [year, month, day] = dateString.split('T')[0].split('-');
+            return `${day}/${month}/${year}`;
         }
 
         function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', { 
-                style: 'currency', 
-                currency: 'BRL' 
-            }).format(value);
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
         }
 
         function getStatusBadgeClass(status) {
-            switch (status) {
-                case 'Pendente':
-                    return 'bg-yellow-100 text-yellow-800';
-                case 'Aprovado':
-                    return 'bg-green-100 text-green-800';
-                case 'Lançado':
-                    return 'bg-blue-100 text-blue-800';
-                case 'Cancelado':
-                    return 'bg-red-100 text-red-800';
-                default:
-                    return 'bg-gray-100 text-gray-800';
-            }
+            const classes = {
+                'Pendente': 'bg-yellow-100 text-yellow-800',
+                'Aprovado': 'bg-green-100 text-green-800',
+                'Lançado': 'bg-blue-100 text-blue-800',
+                'Cancelado': 'bg-red-100 text-red-800'
+            };
+            return classes[status] || 'bg-gray-100 text-gray-800';
         }
 
-        function renderOrdersTable() {
+        async function renderOrdersTable() {
             const tableBody = document.getElementById('ordersTableBody');
             const noOrdersDiv = document.getElementById('noOrders');
-            const orders = getOrders();
+            tableBody.innerHTML = '<tr><td colspan="9" class="text-center p-4">Carregando...</td></tr>';
             
-            // Aplicar filtros
-            const filteredOrders = filterOrders(orders);
-            
-            tableBody.innerHTML = '';
-            
-            if (filteredOrders.length === 0) {
-                noOrdersDiv.classList.remove('hidden');
-                return;
-            }
-            
-            noOrdersDiv.classList.add('hidden');
-            
-            // Ordenar por ID (mais recente primeiro)
-            filteredOrders.sort((a, b) => b.id - a.id);
-            
-            filteredOrders.forEach(order => {
-                const row = document.createElement('tr');
+            try {
+                const pedidos = await getPedidos();
+                tableBody.innerHTML = '';
                 
-                const statusClass = getStatusBadgeClass(order.status);
-                
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.requesterName}</td>
-                    <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">${order.description}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(order.estimatedValue)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(order.deadlineDate)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm ${order.authorizedDate ? 'font-medium text-green-600' : 'text-gray-500'}">${order.authorizedDate ? formatDate(order.authorizedDate) : '-'}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(order.useDate)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.eventName}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
-                            ${order.status}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex space-x-2">
-                            <button class="text-indigo-600 hover:text-indigo-900 view-btn" data-id="${order.id}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                            ${order.status === 'Pendente' ? `
-                                <button class="text-blue-600 hover:text-blue-900 edit-btn" data-id="${order.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                    </svg>
-                                </button>
-                                <button class="text-green-600 hover:text-green-900 approve-btn" data-id="${order.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <button class="text-red-600 hover:text-red-900 delete-btn" data-id="${order.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            ` : ''}
-                            ${order.status === 'Aprovado' ? `
-                                <button class="text-blue-600 hover:text-blue-900 change-btn" data-id="${order.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                    </svg>
-                                </button>
-                                <button class="text-blue-600 hover:text-blue-900 launch-btn" data-id="${order.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <button class="text-red-600 hover:text-red-900 cancel-btn" data-id="${order.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            ` : ''}
-                        </div>
-                    </td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-            
-            // Adicionar event listeners para os botões
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', handleEditOrder);
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', handleDeleteOrder);
-            });
-            
-            document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', handleApproveOrder);
-            });
-            
-            document.querySelectorAll('.change-btn').forEach(btn => {
-                btn.addEventListener('click', handleChangeOrder);
-            });
-            
-            document.querySelectorAll('.launch-btn').forEach(btn => {
-                btn.addEventListener('click', handleLaunchOrder);
-            });
-            
-            document.querySelectorAll('.cancel-btn').forEach(btn => {
-                btn.addEventListener('click', handleCancelOrder);
-            });
-            
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.addEventListener('click', handleViewOrder);
-            });
-        }
+                if (pedidos.length === 0) {
+                    noOrdersDiv.classList.remove('hidden');
+                    return;
+                }
+                noOrdersDiv.classList.add('hidden');
 
-        function filterOrders(orders) {
-            const statusFilter = document.getElementById('statusFilter').value;
-            const eventFilter = document.getElementById('eventFilter').value;
-            const searchInput = document.getElementById('searchInput').value.toLowerCase();
-            const dateTypeFilter = document.getElementById('dateTypeFilter').value;
-            const dateFromFilter = document.getElementById('dateFromFilter').value;
-            const dateToFilter = document.getElementById('dateToFilter').value;
-            
-            return orders.filter(order => {
-                // Filtro de status
-                if (statusFilter && order.status !== statusFilter) {
-                    return false;
-                }
-                
-                // Filtro de evento
-                if (eventFilter && order.eventName !== eventFilter) {
-                    return false;
-                }
-                
-                // Filtro de busca
-                if (searchInput && 
-                    !order.description.toLowerCase().includes(searchInput) && 
-                    !order.requesterName.toLowerCase().includes(searchInput)) {
-                    return false;
-                }
-                
-                // Determinar qual campo de data usar
-                const dateField = dateTypeFilter === 'authorized' ? order.authorizedDate : order.deadlineDate;
-                
-                // Se o tipo de data for "authorizedDate" e o pedido não tiver esse campo, não mostrar
-                if (dateTypeFilter === 'authorized' && !dateField) {
-                    return false;
-                }
-                
-                // Filtro de data (de)
-                if (dateFromFilter && dateField) {
-                    const [fromYear, fromMonth, fromDay] = dateFromFilter.split('-').map(Number);
-                    const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
-                    
-                    const [fieldYear, fieldMonth, fieldDay] = dateField.split('-').map(Number);
-                    const fieldDate = new Date(fieldYear, fieldMonth - 1, fieldDay);
-                    
-                    if (fieldDate < fromDate) {
-                        return false;
-                    }
-                }
-                
-                // Filtro de data (até)
-                if (dateToFilter && dateField) {
-                    const [toYear, toMonth, toDay] = dateToFilter.split('-').map(Number);
-                    const toDate = new Date(toYear, toMonth - 1, toDay);
-                    
-                    const [fieldYear, fieldMonth, fieldDay] = dateField.split('-').map(Number);
-                    const fieldDate = new Date(fieldYear, fieldMonth - 1, fieldDay);
-                    
-                    if (fieldDate > toDate) {
-                        return false;
-                    }
-                }
-                
-                return true;
-            });
-        }
-
-        // Funções de gerenciamento de eventos
-        function getEvents() {
-            return JSON.parse(localStorage.getItem(EVENTS_KEY) || '[]');
-        }
-        
-        function saveEvents(events) {
-            localStorage.setItem(EVENTS_KEY, JSON.stringify(events));
-        }
-        
-        function addEvent(eventName) {
-            const events = getEvents();
-            // Verificar se o evento já existe
-            if (events.includes(eventName)) {
-                return false;
-            }
-            events.push(eventName);
-            saveEvents(events);
-            return true;
-        }
-        
-        function deleteEvent(eventName) {
-            const events = getEvents();
-            const newEvents = events.filter(event => event !== eventName);
-            saveEvents(newEvents);
-            
-            // Atualizar pedidos que usam este evento para "Sem vínculo a evento"
-            const orders = getOrders();
-            let updated = false;
-            
-            orders.forEach(order => {
-                if (order.eventName === eventName) {
-                    // Adicionar ao histórico a alteração do evento
-                    if (!order.history) {
-                        order.history = [];
-                    }
-                    
-                    order.history.push({
-                        action: 'Alteração de Evento',
-                        date: new Date().toISOString(),
-                        details: `Evento "${eventName}" foi removido e pedido alterado para "Sem vínculo a evento"`
-                    });
-                    
-                    order.eventName = "Sem vínculo a evento";
-                    order.updatedAt = new Date().toISOString();
-                    updated = true;
-                }
-            });
-            
-            if (updated) {
-                saveOrders(orders);
-            }
-        }
-        
-        function populateEventSelects() {
-            const events = getEvents();
-            const eventSelects = document.querySelectorAll('#eventName, #eventFilter');
-            
-            eventSelects.forEach(select => {
-                // Salvar o valor atual
-                const currentValue = select.value;
-                
-                // Limpar opções existentes, mantendo a opção padrão
-                if (select.id === 'eventFilter') {
-                    select.innerHTML = `
-                        <option value="">Todos</option>
-                        <option value="Sem vínculo a evento">Sem vínculo a evento</option>
+                pedidos.forEach(pedido => {
+                    const row = document.createElement('tr');
+                    const statusClass = getStatusBadgeClass(pedido.status);
+                    row.innerHTML = `
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">${pedido.id}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">${pedido.requesterName}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title="${pedido.description}">${pedido.description}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">${formatCurrency(pedido.estimatedValue)}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">${formatDate(pedido.deadlineDate)}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-green-600">${formatDate(pedido.authorizedDate)}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">${pedido.eventName}</td>
+                        <td class="px-6 py-4"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${pedido.status}</span></td>
+                        <td class="px-6 py-4 text-sm font-medium flex space-x-2">
+                            <button onclick="handleEditOrder(${pedido.id})" class="text-blue-600 hover:text-blue-900">Editar</button>
+                            <button onclick="handleDeleteOrder(${pedido.id})" class="text-red-600 hover:text-red-900">Excluir</button>
+                        </td>
                     `;
-                } else {
-                    select.innerHTML = `
-                        <option value="Sem vínculo a evento">Sem vínculo a evento</option>
-                    `;
-                }
-                
-                // Adicionar eventos
-                events.forEach(event => {
-                    const option = document.createElement('option');
-                    option.value = event;
-                    option.textContent = event;
-                    select.appendChild(option);
+                    tableBody.appendChild(row);
                 });
-                
-                // Restaurar o valor selecionado se ainda existir
-                if (currentValue && (events.includes(currentValue) || currentValue === "Sem vínculo a evento" || currentValue === "")) {
-                    select.value = currentValue;
-                }
-            });
-        }
-        
-        function renderEventsTable() {
-            const tableBody = document.getElementById('eventsTableBody');
-            const noEventsDiv = document.getElementById('noEvents');
-            const events = getEvents();
-            
-            tableBody.innerHTML = '';
-            
-            if (events.length === 0) {
-                noEventsDiv.classList.remove('hidden');
-                return;
+            } catch(error) {
+                tableBody.innerHTML = `<tr><td colspan="9" class="text-center p-4 text-red-500">Erro ao carregar pedidos: ${error.message}</td></tr>`;
             }
-            
-            noEventsDiv.classList.add('hidden');
-            
-            events.forEach(event => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${event}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button class="text-red-600 hover:text-red-900 delete-event-btn" data-event="${event}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-            
-            // Adicionar event listeners para os botões de exclusão
-            document.querySelectorAll('.delete-event-btn').forEach(btn => {
-                btn.addEventListener('click', handleDeleteEvent);
-            });
         }
         
-        function handleManageEvents() {
-            renderEventsTable();
-            openModal('eventsModal');
+        async function populateEventSelects() {
+            try {
+                const eventos = await getEventos();
+                const eventSelect = document.getElementById('eventName');
+                eventSelect.innerHTML = '<option value="Sem vínculo a evento">Sem vínculo a evento</option>';
+                eventos.forEach(evento => {
+                    const option = document.createElement('option');
+                    option.value = evento.nome;
+                    option.textContent = evento.nome;
+                    eventSelect.appendChild(option);
+                });
+            } catch(error) {
+                console.error("Erro ao carregar eventos:", error);
+            }
         }
         
-        function handleDeleteEvent(e) {
-            const eventName = e.currentTarget.dataset.event;
-            document.getElementById('confirmTitle').textContent = 'Excluir Evento';
-            document.getElementById('confirmMessage').textContent = `Tem certeza que deseja excluir o evento "${eventName}"? Todos os pedidos associados a este evento serão alterados para "Sem vínculo a evento".`;
-            document.getElementById('confirmButton').classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-blue-600', 'hover:bg-blue-700');
-            document.getElementById('confirmButton').classList.add('bg-red-600', 'hover:bg-red-700');
-            document.getElementById('confirmButton').textContent = 'Excluir';
-            
-            document.getElementById('confirmButton').onclick = function() {
-                deleteEvent(eventName);
-                closeAllModals();
-                renderEventsTable();
-                populateEventSelects();
-                renderOrdersTable();
-            };
-            
-            openModal('confirmModal');
-        }
+        // --- HANDLERS (AÇÕES DO USUÁRIO) ---
 
-        function populateEventFilters() {
-            populateEventSelects();
-        }
-
-        function resetForm(formId) {
-            document.getElementById(formId).reset();
-        }
-
-        // Handlers de eventos
         function handleNewOrder() {
             document.getElementById('orderForm').reset();
             document.getElementById('orderId').value = '';
-            document.getElementById('orderStatus').value = 'Pendente';
-            
-            // Esconder campos de aprovação
-            document.getElementById('approvalFields').classList.add('hidden');
-            document.getElementById('additionalNotesField').classList.add('hidden');
-            
-            // Definir data mínima para hoje
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('deadlineDate').min = today;
-            document.getElementById('useDate').min = today;
-            
             openModal('newOrderModal');
         }
-
-        function handleEditOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            const order = getOrderById(orderId);
-            
-            if (order) {
-                document.getElementById('orderId').value = order.id;
-                document.getElementById('orderStatus').value = order.status;
-                document.getElementById('requesterName').value = order.requesterName;
-                document.getElementById('description').value = order.description;
-                document.getElementById('estimatedValue').value = order.estimatedValue;
-                document.getElementById('deadlineDate').value = order.deadlineDate;
-                document.getElementById('useDate').value = order.useDate;
-                document.getElementById('eventName').value = order.eventName;
-                
-                // Mostrar campos de aprovação se necessário
-                if (order.status === 'Aprovado' || order.status === 'Lançado') {
-                    document.getElementById('approvalFields').classList.remove('hidden');
-                    document.getElementById('authorizedDate').value = order.authorizedDate || '';
-                    document.getElementById('paymentMethod').value = order.paymentMethod || '';
-                } else {
-                    document.getElementById('approvalFields').classList.add('hidden');
+        
+        async function handleEditOrder(id) {
+            // Esta função pode ser implementada depois, buscando os dados do pedido e preenchendo o formulário.
+            alert("Função de editar pedido ID: " + id + " a ser implementada.");
+        }
+        
+        async function handleDeleteOrder(id) {
+            if (confirm(`Tem certeza que deseja excluir o pedido #${id}?`)) {
+                try {
+                    await deletePedido(id);
+                    alert('Pedido excluído com sucesso!');
+                    renderOrdersTable();
+                } catch(error) {
+                    alert('Erro ao excluir pedido: ' + error.message);
                 }
-                
-                // Mostrar campo de observações adicionais se existir
-                if (order.additionalNotes) {
-                    document.getElementById('additionalNotesField').classList.remove('hidden');
-                    document.getElementById('additionalNotes').value = order.additionalNotes;
-                } else {
-                    document.getElementById('additionalNotesField').classList.add('hidden');
-                }
-                
-                openModal('newOrderModal');
             }
         }
-
-        function handleDeleteOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            document.getElementById('confirmTitle').textContent = 'Excluir Pedido';
-            document.getElementById('confirmMessage').textContent = `Tem certeza que deseja excluir o pedido #${orderId}?`;
-            document.getElementById('confirmButton').classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-blue-600', 'hover:bg-blue-700');
-            document.getElementById('confirmButton').classList.add('bg-red-600', 'hover:bg-red-700');
-            document.getElementById('confirmButton').textContent = 'Excluir';
+        
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            document.getElementById('confirmButton').onclick = function() {
-                deleteOrder(orderId);
-                closeAllModals();
+            const pedidoData = {
+                requesterName: document.getElementById('requesterName').value,
+                description: document.getElementById('description').value,
+                estimatedValue: parseFloat(document.getElementById('estimatedValue').value),
+                deadlineDate: document.getElementById('deadlineDate').value,
+                useDate: document.getElementById('useDate').value,
+                eventName: document.getElementById('eventName').value,
+            };
+
+            const id = document.getElementById('orderId').value;
+
+            try {
+                if (id) {
+                    // Lógica de atualização a ser implementada
+                } else {
+                    await createPedido(pedidoData);
+                    alert('Pedido criado com sucesso!');
+                }
+                closeModal('newOrderModal');
                 renderOrdersTable();
-                populateEventFilters();
-            };
-            
-            openModal('confirmModal');
-        }
-
-        function handleApproveOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            document.getElementById('approvalOrderId').value = orderId;
-            document.getElementById('approvalPassword').value = '';
-            document.getElementById('approvalAuthorizedDate').value = '';
-            document.getElementById('approvalPaymentMethod').value = '';
-            document.getElementById('passwordError').classList.add('hidden');
-            
-            // Definir data mínima para hoje
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('approvalAuthorizedDate').min = today;
-            
-            openModal('approvalModal');
-        }
-
-        function handleChangeOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            const order = getOrderById(orderId);
-            
-            document.getElementById('changeOrderId').value = orderId;
-            document.getElementById('changeNotes').value = order.additionalNotes || '';
-            
-            openModal('changeModal');
-        }
-
-        function handleLaunchOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            document.getElementById('confirmTitle').textContent = 'Lançar Pedido';
-            document.getElementById('confirmMessage').textContent = `Confirmar que o pedido #${orderId} foi lançado no sistema financeiro?`;
-            document.getElementById('confirmButton').classList.remove('bg-red-600', 'hover:bg-red-700', 'bg-blue-600', 'hover:bg-blue-700');
-            document.getElementById('confirmButton').classList.add('bg-green-600', 'hover:bg-green-700');
-            document.getElementById('confirmButton').textContent = 'Confirmar Lançamento';
-            
-            document.getElementById('confirmButton').onclick = function() {
-                const order = getOrderById(orderId);
-                if (order) {
-                    order.status = 'Lançado';
-                    updateOrder(order);
-                    closeAllModals();
-                    renderOrdersTable();
-                }
-            };
-            
-            openModal('confirmModal');
-        }
-
-        function handleCancelOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            document.getElementById('confirmTitle').textContent = 'Cancelar Pedido';
-            document.getElementById('confirmMessage').textContent = `Tem certeza que deseja cancelar o pedido #${orderId}?`;
-            document.getElementById('confirmButton').classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-blue-600', 'hover:bg-blue-700');
-            document.getElementById('confirmButton').classList.add('bg-red-600', 'hover:bg-red-700');
-            document.getElementById('confirmButton').textContent = 'Confirmar Cancelamento';
-            
-            document.getElementById('confirmButton').onclick = function() {
-                const order = getOrderById(orderId);
-                if (order) {
-                    order.status = 'Cancelado';
-                    updateOrder(order);
-                    closeAllModals();
-                    renderOrdersTable();
-                }
-            };
-            
-            openModal('confirmModal');
-        }
-
-        function handleViewOrder(e) {
-            const orderId = parseInt(e.currentTarget.dataset.id);
-            const order = getOrderById(orderId);
-            
-            if (order) {
-                document.getElementById('detailId').textContent = order.id;
-                
-                const statusElement = document.getElementById('detailStatus');
-                statusElement.textContent = order.status;
-                statusElement.className = `text-base font-medium ${getStatusBadgeClass(order.status)} px-2 py-1 rounded-full inline-block`;
-                
-                document.getElementById('detailRequester').textContent = order.requesterName;
-                document.getElementById('detailDescription').textContent = order.description;
-                document.getElementById('detailValue').textContent = formatCurrency(order.estimatedValue);
-                document.getElementById('detailDeadline').textContent = formatDate(order.deadlineDate);
-                document.getElementById('detailUseDate').textContent = formatDate(order.useDate);
-                document.getElementById('detailEvent').textContent = order.eventName;
-                
-                // Mostrar informações de aprovação se existirem
-                if (order.status === 'Aprovado' || order.status === 'Lançado') {
-                    document.getElementById('approvalDetailsSection').classList.remove('hidden');
-                    document.getElementById('detailAuthorizedDate').textContent = formatDate(order.authorizedDate);
-                    document.getElementById('detailPaymentMethod').textContent = order.paymentMethod;
-                } else {
-                    document.getElementById('approvalDetailsSection').classList.add('hidden');
-                }
-                
-                // Mostrar observações adicionais se existirem
-                if (order.additionalNotes) {
-                    document.getElementById('notesSection').classList.remove('hidden');
-                    document.getElementById('detailNotes').textContent = order.additionalNotes;
-                } else {
-                    document.getElementById('notesSection').classList.add('hidden');
-                }
-                
-                // Mostrar histórico de ações
-                const historyList = document.getElementById('detailHistory');
-                const noHistoryMsg = document.getElementById('noHistory');
-                historyList.innerHTML = '';
-                
-                if (order.history && order.history.length > 0) {
-                    // Ordenar histórico do mais recente para o mais antigo
-                    const sortedHistory = [...order.history].sort((a, b) => 
-                        new Date(b.date) - new Date(a.date)
-                    );
-                    
-                    sortedHistory.forEach(item => {
-                        const li = document.createElement('li');
-                        li.className = 'pb-2 border-b border-gray-200 last:border-0';
-                        
-                        // Determinar ícone baseado na ação
-                        let icon = '';
-                        switch(item.action) {
-                            case 'Criação':
-                                icon = '<svg class="w-4 h-4 text-green-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"></path></svg>';
-                                break;
-                            case 'Edição':
-                                icon = '<svg class="w-4 h-4 text-blue-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>';
-                                break;
-                            case 'Alteração de Status':
-                            case 'Aprovação':
-                                icon = '<svg class="w-4 h-4 text-green-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
-                                break;
-                            case 'Lançamento':
-                                icon = '<svg class="w-4 h-4 text-blue-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>';
-                                break;
-                            case 'Cancelamento':
-                                icon = '<svg class="w-4 h-4 text-red-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>';
-                                break;
-                            case 'Alteração de Evento':
-                                icon = '<svg class="w-4 h-4 text-purple-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" clip-rule="evenodd"></path></svg>';
-                                break;
-                            case 'Observações':
-                                icon = '<svg class="w-4 h-4 text-gray-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>';
-                                break;
-                            default:
-                                icon = '<svg class="w-4 h-4 text-gray-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>';
-                        }
-                        
-                        // Formatar data e hora corretamente
-                        const dateTime = new Date(item.date);
-                        const day = dateTime.getDate().toString().padStart(2, '0');
-                        const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
-                        const year = dateTime.getFullYear();
-                        const hours = dateTime.getHours().toString().padStart(2, '0');
-                        const minutes = dateTime.getMinutes().toString().padStart(2, '0');
-                        
-                        const formattedDate = `${day}/${month}/${year}`;
-                        const formattedTime = `${hours}:${minutes}`;
-                        
-                        li.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    ${icon}
-                                    <span class="font-medium">${item.action}</span>
-                                    <p class="text-gray-600 mt-1 ml-5">${item.details}</p>
-                                </div>
-                                <span class="text-xs text-gray-500">${formattedDate} às ${formattedTime}</span>
-                            </div>
-                        `;
-                        
-                        historyList.appendChild(li);
-                    });
-                    
-                    noHistoryMsg.classList.add('hidden');
-                } else {
-                    noHistoryMsg.classList.remove('hidden');
-                }
-                
-                openModal('detailsModal');
+            } catch(error) {
+                alert('Erro ao salvar pedido: ' + error.message);
             }
-        }
+        });
 
-        // Função de impressão
-        function handlePrint() {
-            // Atualizar data de impressão
-            const now = new Date();
-            // Garantir que a data seja exibida corretamente
-            const day = now.getDate().toString().padStart(2, '0');
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const year = now.getFullYear();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            
-            document.getElementById('printDate').textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
-            
-            // Atualizar informações de filtro
-            let filterInfo = 'Filtros aplicados: ';
-            const statusFilter = document.getElementById('statusFilter').value;
-            const eventFilter = document.getElementById('eventFilter').value;
-            const searchInput = document.getElementById('searchInput').value;
-            const dateTypeFilter = document.getElementById('dateTypeFilter').value;
-            const dateFromFilter = document.getElementById('dateFromFilter').value;
-            const dateToFilter = document.getElementById('dateToFilter').value;
-            
-            let filterCount = 0;
-            
-            if (statusFilter) {
-                filterInfo += `Status: ${statusFilter}`;
-                filterCount++;
-            }
-            
-            if (eventFilter) {
-                filterInfo += filterCount > 0 ? `, Evento: ${eventFilter}` : `Evento: ${eventFilter}`;
-                filterCount++;
-            }
-            
-            if (searchInput) {
-                filterInfo += filterCount > 0 ? `, Busca: "${searchInput}"` : `Busca: "${searchInput}"`;
-                filterCount++;
-            }
-            
-            if (dateFromFilter || dateToFilter) {
-                const dateTypeText = dateTypeFilter === 'deadline' ? 'Prazo' : 'Data Aprovada';
-                let dateFilterText = `${dateTypeText}: `;
-                
-                if (dateFromFilter && dateToFilter) {
-                    dateFilterText += `de ${formatDate(dateFromFilter)} até ${formatDate(dateToFilter)}`;
-                } else if (dateFromFilter) {
-                    dateFilterText += `a partir de ${formatDate(dateFromFilter)}`;
-                } else if (dateToFilter) {
-                    dateFilterText += `até ${formatDate(dateToFilter)}`;
-                }
-                
-                filterInfo += filterCount > 0 ? `, ${dateFilterText}` : dateFilterText;
-                filterCount++;
-            }
-            
-            if (filterCount === 0) {
-                filterInfo += 'Todos os pedidos';
-            }
-            
-            document.getElementById('printFilterInfo').textContent = filterInfo;
-            
-            // Iniciar impressão
-            window.print();
-        }
 
-        // Event Listeners
+        // --- INICIALIZAÇÃO ---
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Renderizar tabela inicial
-            renderOrdersTable();
-            populateEventFilters();
-            
-            // Botão Novo Pedido
             document.getElementById('newOrderBtn').addEventListener('click', handleNewOrder);
             
-            // Botão Gerenciar Eventos
-            document.getElementById('manageEventsBtn').addEventListener('click', handleManageEvents);
-            
-            // Botão Imprimir
-            document.getElementById('printBtn').addEventListener('click', handlePrint);
-            
-            // Formulário de eventos
-            document.getElementById('eventForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const eventName = document.getElementById('newEventName').value.trim();
-                if (eventName) {
-                    const added = addEvent(eventName);
-                    if (added) {
-                        document.getElementById('newEventName').value = '';
-                        renderEventsTable();
-                        populateEventSelects();
-                    } else {
-                        alert('Este evento já existe!');
-                    }
-                }
-            });
-            
-            // Fechar modais
-            document.querySelectorAll('.modal-close').forEach(button => {
-                button.addEventListener('click', function() {
-                    closeAllModals();
+            // Adicionar listeners para fechar modais
+            document.querySelectorAll('.modal-close, .modal-overlay').forEach(el => {
+                el.addEventListener('click', () => {
+                    closeModal('newOrderModal');
+                    // Adicione outros IDs de modal aqui
                 });
             });
-            
-            document.querySelectorAll('.modal-overlay').forEach(overlay => {
-                overlay.addEventListener('click', function() {
-                    closeAllModals();
-                });
-            });
-            
-            // Formulário de pedido
-            document.getElementById('orderForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const orderId = document.getElementById('orderId').value;
-                const status = document.getElementById('orderStatus').value;
-                
-                const orderData = {
-                    requesterName: document.getElementById('requesterName').value,
-                    description: document.getElementById('description').value,
-                    estimatedValue: parseFloat(document.getElementById('estimatedValue').value),
-                    deadlineDate: document.getElementById('deadlineDate').value,
-                    useDate: document.getElementById('useDate').value,
-                    eventName: document.getElementById('eventName').value,
-                    status: status
-                };
-                
-                // Adicionar campos de aprovação se visíveis
-                if (!document.getElementById('approvalFields').classList.contains('hidden')) {
-                    orderData.authorizedDate = document.getElementById('authorizedDate').value;
-                    orderData.paymentMethod = document.getElementById('paymentMethod').value;
-                }
-                
-                // Adicionar observações adicionais se existirem
-                if (!document.getElementById('additionalNotesField').classList.contains('hidden')) {
-                    orderData.additionalNotes = document.getElementById('additionalNotes').value;
-                }
-                
-                if (orderId) {
-                    // Atualizar pedido existente
-                    orderData.id = parseInt(orderId);
-                    updateOrder(orderData);
-                } else {
-                    // Adicionar novo pedido
-                    addOrder(orderData);
-                }
-                
-                closeAllModals();
-                renderOrdersTable();
-                populateEventFilters();
-            });
-            
-            // Formulário de aprovação
-            document.getElementById('approvalForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const password = document.getElementById('approvalPassword').value;
-                
-                if (password !== 'criativa123') {
-                    document.getElementById('passwordError').classList.remove('hidden');
-                    return;
-                }
-                
-                const orderId = parseInt(document.getElementById('approvalOrderId').value);
-                const order = getOrderById(orderId);
-                
-                if (order) {
-                    order.status = 'Aprovado';
-                    order.authorizedDate = document.getElementById('approvalAuthorizedDate').value;
-                    order.paymentMethod = document.getElementById('approvalPaymentMethod').value;
-                    updateOrder(order);
-                    closeAllModals();
-                    renderOrdersTable();
-                }
-            });
-            
-            // Formulário de alteração
-            document.getElementById('changeForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const orderId = parseInt(document.getElementById('changeOrderId').value);
-                const order = getOrderById(orderId);
-                
-                if (order) {
-                    order.additionalNotes = document.getElementById('changeNotes').value;
-                    updateOrder(order);
-                    closeAllModals();
-                    renderOrdersTable();
-                }
-            });
-            
-            // Filtros
-            document.getElementById('statusFilter').addEventListener('change', renderOrdersTable);
-            document.getElementById('eventFilter').addEventListener('change', renderOrdersTable);
-            document.getElementById('searchInput').addEventListener('input', renderOrdersTable);
-            document.getElementById('dateTypeFilter').addEventListener('change', renderOrdersTable);
-            document.getElementById('dateFromFilter').addEventListener('change', renderOrdersTable);
-            document.getElementById('dateToFilter').addEventListener('change', renderOrdersTable);
-            
-            // Botão limpar filtros
-            document.getElementById('clearFiltersBtn').addEventListener('click', function() {
-                document.getElementById('statusFilter').value = '';
-                document.getElementById('eventFilter').value = '';
-                document.getElementById('searchInput').value = '';
-                document.getElementById('dateTypeFilter').value = 'deadline';
-                document.getElementById('dateFromFilter').value = '';
-                document.getElementById('dateToFilter').value = '';
-                renderOrdersTable();
-            });
+
+            // Carregar dados iniciais
+            renderOrdersTable();
+            populateEventSelects();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9609f94363f64b28',t:'MTc1Mjc1Nzc2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
-
-
